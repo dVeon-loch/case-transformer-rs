@@ -2,5 +2,14 @@
 name = "case-transformer-rs"
 version = "0.1.0"
 edition = "2021"
+authors = ["Devon Bloch - Software Engineer"]
+
+[lints.rust]
+missing_docs = "warn"
+
+[lints.clippy]
+missing_docs_in_private_items = "warn"
 
 [dependencies]
+actix-web = "4.9"
+eyre = "0.6"
