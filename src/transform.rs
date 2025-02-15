@@ -1,3 +1,4 @@
+use eyre::bail;
 use serde::{Deserialize, Serialize};
 use transform_method::TransformMethod;
 
@@ -16,4 +17,8 @@ impl TransformRequest {
             html,
         }
     }
+}
+
+pub fn transform_case(transform_request: TransformRequest) -> eyre::Result<String> {
+    bail!("transform logic not implemented yet")
 }

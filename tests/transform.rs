@@ -3,8 +3,13 @@
 #[cfg(test)]
 mod tests {
     use actix_cors::Cors;
-    use actix_web::{test, web, App};
-    use case_transformer_rs::{endpoints::transform, transform::{transform_method::TransformMethod, TransformRequest}};
+    use actix_web::{
+        test, App,
+    };
+    use case_transformer_rs::{
+        endpoints::transform,
+        transform::{transform_method::TransformMethod, TransformRequest},
+    };
 
     use super::*;
 
@@ -23,7 +28,8 @@ mod tests {
         )
         .await;
 
-        let request_payload = TransformRequest::new(TransformMethod::LOWER, r#"<p>Hello world</p>"#.to_string());
+        let request_payload =
+            TransformRequest::new(TransformMethod::LOWER, r#"<p>Hello world</p>"#.to_string());
 
         let req = test::TestRequest::get()
             .uri("/transform")
@@ -31,16 +37,27 @@ mod tests {
             .to_request();
         let resp = test::call_service(&app, req).await;
 
-        assert!(resp.status().is_success());
+        if !resp.status().is_success() {
+            // Extract the response body as bytes
+            let body = test::read_body(resp).await;
 
-        let content_type = resp.headers().get("Content-Type").unwrap();
-        assert_eq!(content_type, "text/plain");
-        
-        let body = test::read_body(resp).await;
+            // Convert the body to a string
+            let body_str = String::from_utf8(body.to_vec()).unwrap();
 
-        let body_str = String::from_utf8(body.to_vec()).unwrap();
+            // Print the response body for debugging
+            println!("Error response body: {}", body_str);
 
-        assert_eq!(body_str, r#"<p>HELLO WORLD</p>"#);
+            assert!(false)
+        } else {
+            let content_type = resp.headers().get("Content-Type").unwrap();
+            assert_eq!(content_type, "text/plain");
+
+            let body = test::read_body(resp).await;
+
+            let body_str = String::from_utf8(body.to_vec()).unwrap();
+
+            assert_eq!(body_str, r#"<p>HELLO WORLD</p>"#);
+        }
     }
 
     #[actix_web::test]
@@ -58,7 +75,8 @@ mod tests {
         )
         .await;
 
-        let request_payload = TransformRequest::new(TransformMethod::LOWER, r#"<p>Hello WORLD</p>"#.to_string());
+        let request_payload =
+            TransformRequest::new(TransformMethod::LOWER, r#"<p>Hello WORLD</p>"#.to_string());
 
         let req = test::TestRequest::get()
             .uri("/transform")
@@ -66,15 +84,28 @@ mod tests {
             .to_request();
         let resp = test::call_service(&app, req).await;
 
-        assert!(resp.status().is_success());
-        
-        let content_type = resp.headers().get("Content-Type").unwrap();
-        assert_eq!(content_type, "text/plain");
+        if !resp.status().is_success() {
+            // Extract the response body as bytes
+            let body = test::read_body(resp).await;
 
-        let body = test::read_body(resp).await;
+            // Convert the body to a string
+            let body_str = String::from_utf8(body.to_vec()).unwrap();
 
-        let body_str = String::from_utf8(body.to_vec()).unwrap();
+            // Print the response body for debugging
+            println!("Error response body: {}", body_str);
 
-        assert_eq!(body_str, r#"<p>hello world</p>"#);
+            assert!(false)
+        } else {
+            assert!(resp.status().is_success());
+
+            let content_type = resp.headers().get("Content-Type").unwrap();
+            assert_eq!(content_type, "text/plain");
+
+            let body = test::read_body(resp).await;
+
+            let body_str = String::from_utf8(body.to_vec()).unwrap();
+
+            assert_eq!(body_str, r#"<p>hello world</p>"#);
+        }
     }
 }
