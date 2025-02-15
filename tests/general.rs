@@ -4,7 +4,7 @@
 mod tests {
     use actix_cors::Cors;
     use actix_web::{test, web, App};
-    use case_transformer_rs::alive;
+    use case_transformer_rs::endpoints::alive;
 
     use super::*;
 

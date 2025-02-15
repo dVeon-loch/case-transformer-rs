@@ -1,7 +1,7 @@
 //! Main entry point into the Case Transformer server application
 use actix_cors::Cors;
 use actix_web::{web, App, HttpServer};
-use case_transformer_rs::alive;
+use case_transformer_rs::endpoints::alive;
 
 const SERVER_PORT: u16 = 5000;
 
