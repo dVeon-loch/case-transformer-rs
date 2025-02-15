@@ -27,7 +27,7 @@ mod tests {
         .await;
 
         let request_payload =
-            TransformRequest::new(TransformMethod::LOWER, r#"<p>Hello world</p>"#.to_string());
+            TransformRequest::new(TransformMethod::UPPER, r#"<p>Hello world</p>"#.to_string());
 
         let req = test::TestRequest::get()
             .uri("/transform")
@@ -43,7 +43,7 @@ mod tests {
         );
 
         let content_type = resp.headers().get("Content-Type").unwrap();
-        assert_eq!(content_type, "text/plain");
+        assert_eq!(content_type, "text/plain; charset=utf-8");
 
         let body = test::read_body(resp).await;
 
@@ -82,11 +82,11 @@ mod tests {
             resp.status(),
             test::read_body(resp).await
         );
-        
+
         assert!(resp.status().is_success());
 
         let content_type = resp.headers().get("Content-Type").unwrap();
-        assert_eq!(content_type, "text/plain");
+        assert_eq!(content_type, "text/plain; charset=utf-8");
 
         let body = test::read_body(resp).await;
 
