@@ -3,9 +3,7 @@
 #[cfg(test)]
 mod tests {
     use actix_cors::Cors;
-    use actix_web::{
-        test, App,
-    };
+    use actix_web::{test, App};
     use case_transformer_rs::{
         endpoints::transform,
         transform::{transform_method::TransformMethod, TransformRequest},
@@ -37,27 +35,21 @@ mod tests {
             .to_request();
         let resp = test::call_service(&app, req).await;
 
-        if !resp.status().is_success() {
-            // Extract the response body as bytes
-            let body = test::read_body(resp).await;
+        assert!(
+            resp.status().is_success(),
+            "Request failed with status: {}. Response body: {:?}",
+            resp.status(),
+            test::read_body(resp).await
+        );
 
-            // Convert the body to a string
-            let body_str = String::from_utf8(body.to_vec()).unwrap();
+        let content_type = resp.headers().get("Content-Type").unwrap();
+        assert_eq!(content_type, "text/plain");
 
-            // Print the response body for debugging
-            println!("Error response body: {}", body_str);
+        let body = test::read_body(resp).await;
 
-            assert!(false)
-        } else {
-            let content_type = resp.headers().get("Content-Type").unwrap();
-            assert_eq!(content_type, "text/plain");
+        let body_str = String::from_utf8(body.to_vec()).unwrap();
 
-            let body = test::read_body(resp).await;
-
-            let body_str = String::from_utf8(body.to_vec()).unwrap();
-
-            assert_eq!(body_str, r#"<p>HELLO WORLD</p>"#);
-        }
+        assert_eq!(body_str, r#"<p>HELLO WORLD</p>"#);
     }
 
     #[actix_web::test]
@@ -84,28 +76,22 @@ mod tests {
             .to_request();
         let resp = test::call_service(&app, req).await;
 
-        if !resp.status().is_success() {
-            // Extract the response body as bytes
-            let body = test::read_body(resp).await;
+        assert!(
+            resp.status().is_success(),
+            "Request failed with status: {}. Response body: {:?}",
+            resp.status(),
+            test::read_body(resp).await
+        );
+        
+        assert!(resp.status().is_success());
 
-            // Convert the body to a string
-            let body_str = String::from_utf8(body.to_vec()).unwrap();
+        let content_type = resp.headers().get("Content-Type").unwrap();
+        assert_eq!(content_type, "text/plain");
 
-            // Print the response body for debugging
-            println!("Error response body: {}", body_str);
+        let body = test::read_body(resp).await;
 
-            assert!(false)
-        } else {
-            assert!(resp.status().is_success());
+        let body_str = String::from_utf8(body.to_vec()).unwrap();
 
-            let content_type = resp.headers().get("Content-Type").unwrap();
-            assert_eq!(content_type, "text/plain");
-
-            let body = test::read_body(resp).await;
-
-            let body_str = String::from_utf8(body.to_vec()).unwrap();
-
-            assert_eq!(body_str, r#"<p>hello world</p>"#);
-        }
+        assert_eq!(body_str, r#"<p>hello world</p>"#);
     }
 }
