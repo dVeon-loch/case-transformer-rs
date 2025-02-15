@@ -1,3 +1,5 @@
+//! Contains all general tests for the transform endpoint
+
 #[cfg(test)]
 mod tests {
     use actix_cors::Cors;
@@ -7,7 +9,7 @@ mod tests {
     use super::*;
 
     #[actix_web::test]
-    async fn test_alive() {
+    async fn transform_upper_simple() {
         let app = test::init_service(App::new()
         .wrap(
             Cors::default()
@@ -16,10 +18,25 @@ mod tests {
                 .allow_any_origin()
                 .max_age(3600), // Cache preflight request for 1 hour
         )
-        .service(web::scope("/api/v1").service(alive))).await;
-        let req = test::TestRequest::get().uri("/api/v1/alive")
-            .to_request();
-        let resp = test::call_service(&app, req).await;
-        assert!(resp.status().is_success());
+        //.service(web::scope("/api/v1").service(transform)))
+        ).await;
+       
+       todo!("Implement test and endpoint")
+     }
+
+    #[actix_web::test]
+    async fn transform_lower_simple() {
+        let app = test::init_service(App::new()
+        .wrap(
+            Cors::default()
+                .allow_any_header()
+                .allow_any_method()
+                .allow_any_origin()
+                .max_age(3600), // Cache preflight request for 1 hour
+        )
+        //.service(web::scope("/api/v1").service(transform)))
+        ).await;
+       
+       todo!("Implement test and endpoint")
     }
 }
