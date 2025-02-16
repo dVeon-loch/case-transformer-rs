@@ -1,5 +1,22 @@
 # Case Transformer
 
+Simple Rust webserver that exposes two REST-API endpoints: 
+- GET `/alive` for simple checking if the server is up
+- POST `/transform` which ingests a JSON payload such as:
+
+```json
+{
+    "html":"<div><p>Hello World</p><span>Not a paragraph</span></div>", 
+    "transform":"uppercase"
+}
+```
+
+and returns the input HTML string transformed according to the specified transform method:
+
+```html
+<div><p>HELLO WORLD</p><span>Not a paragraph</span></div>
+```
+
 ## Running instructions
 
 All subsequent commands are run in the root of this repository and assume a default installation of Rust is present on the system.
@@ -39,6 +56,6 @@ curl -X POST http://localhost:5000/api/v1/transform   -H "Content-Type: applicat
 
 Expected results:
 
-```bash
+```html
 <div><p>HELLO WORLD</p><span>Not a paragraph</span></div>
 ```
