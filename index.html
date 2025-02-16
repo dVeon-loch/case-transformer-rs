@@ -39,8 +39,17 @@
                     })
                 });
                 
-                const data = await response.json();
-                resultDiv.innerHTML = `<strong>Transformed HTML:</strong><br>${data}`;
+                if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
+                
+                const transformedHtml = await response.text();
+                
+                resultDiv.innerHTML = `
+                    <strong>Transformed HTML:</strong>
+                    <pre>${transformedHtml}</pre>
+                `;
+                
             } catch (error) {
                 resultDiv.innerHTML = `<strong>Error:</strong> ${error.message}`;
             }
