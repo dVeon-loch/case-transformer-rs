@@ -17,7 +17,15 @@ and returns the input HTML string transformed according to the specified transfo
 <div><p>HELLO WORLD</p><span>Not a paragraph</span></div>
 ```
 
-## Running instructions
+For general usage, navigate to the page hosted below:
+
+[HTML Text Transformer](https://dveon-loch.github.io/case-transformer-rs/)
+
+The frontend is hosted via Github Pages, and the backend is hosted via [Render.com](https://render.com)
+
+See below for local running instructions
+
+## Local running instructions
 
 All subsequent commands are run in the root of this repository and assume a default installation of Rust is present on the system.
 ### Run via cargo
