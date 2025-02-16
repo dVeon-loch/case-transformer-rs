@@ -23,7 +23,7 @@ All subsequent commands are run in the root of this repository and assume a defa
 ### Run via cargo
 
 ```bash
-cargo run --release
+cargo run --release -- --local
 ```
 
 ### Run binary directly
@@ -31,7 +31,7 @@ cargo run --release
 ```bash
 cargo build --release
 
-./target/release/case-transformer-rs
+./target/release/case-transformer-rs --local
 ```
 
 ## Testing
@@ -44,11 +44,9 @@ cargo test
 
 ### Testing main application binary
 
-```bash
-cargo run --release
-```
+1. Run according to the instructions [above](#running-instructions)
 
-In a separate terminal:
+2. In a separate terminal:
 
 ```bash
 curl -X POST http://localhost:5000/api/v1/transform   -H "Content-Type: application/json"   -d '{"html":"<div><p>Hello World</p><span>Not a paragraph</span></div>", "transform":"uppercase"}'
