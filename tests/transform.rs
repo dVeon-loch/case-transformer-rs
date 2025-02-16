@@ -29,7 +29,7 @@ mod tests {
         let request_payload =
             TransformRequest::new(TransformMethod::UPPER, r#"<p>Hello world</p>"#.to_string());
 
-        let req = test::TestRequest::get()
+        let req = test::TestRequest::post()
             .uri("/transform")
             .set_json(request_payload)
             .to_request();
@@ -70,7 +70,7 @@ mod tests {
         let request_payload =
             TransformRequest::new(TransformMethod::LOWER, r#"<p>Hello WORLD</p>"#.to_string());
 
-        let req = test::TestRequest::get()
+        let req = test::TestRequest::post()
             .uri("/transform")
             .set_json(request_payload)
             .to_request();
@@ -117,7 +117,7 @@ paragraph</p></div>"#
                 .to_string(),
         );
 
-        let req = test::TestRequest::get()
+        let req = test::TestRequest::post()
             .uri("/transform")
             .set_json(request_payload)
             .to_request();
@@ -164,7 +164,7 @@ PARAGRAPH</p></div>"#);
                 .to_string(),
         );
 
-        let req = test::TestRequest::get()
+        let req = test::TestRequest::post()
             .uri("/transform")
             .set_json(request_payload)
             .to_request();
@@ -210,7 +210,7 @@ PARAGRAPH</p></div>"#);
                 .to_string(),
         );
 
-        let req = test::TestRequest::get()
+        let req = test::TestRequest::post()
             .uri("/transform")
             .set_json(request_payload)
             .to_request();
@@ -256,7 +256,7 @@ PARAGRAPH</p></div>"#);
                 .to_string(),
         );
 
-        let req = test::TestRequest::get()
+        let req = test::TestRequest::post()
             .uri("/transform")
             .set_json(request_payload)
             .to_request();

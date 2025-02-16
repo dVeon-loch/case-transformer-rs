@@ -1,4 +1,4 @@
-use actix_web::{get, http::header::ContentType, web, HttpResponse, Responder};
+use actix_web::{get, http::header::ContentType, post, web, HttpResponse, Responder};
 use log::debug;
 
 use crate::transform::{transform_case, TransformRequest};
@@ -11,7 +11,7 @@ pub async fn alive() -> impl Responder {
 }
 
 /// Exposed by the server to provide an endpoint for the case transforming function
-#[get("/transform")]
+#[post("/transform")]
 pub async fn transform(transform_request: web::Json<TransformRequest>) -> impl Responder {
     debug!("Hit /transform endpoint!");
 
