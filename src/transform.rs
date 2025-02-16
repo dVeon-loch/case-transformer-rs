@@ -21,16 +21,27 @@ impl TransformRequest {
     }
 }
 
+/// Transforms the text nodes of a given html string that may or may not be a fragment, into
+/// either uppercase or lowercase depending on the `TransformMethod`
 pub fn transform_case(transform_request: TransformRequest) -> eyre::Result<String> {
     let context_name = QualName::new(None, ns!(),  local_name!("div"));
 
-    let mut html = kuchikiki::parse_fragment(context_name, vec![]).from_utf8().one(transform_request.html.as_bytes());
+    let has_html_tag = transform_request.html.contains("<html>") && transform_request.html.contains("</html>");
+
+    let html = kuchikiki::parse_fragment(context_name, vec![]).from_utf8().one(transform_request.html.as_bytes());
 
     transform_text_nodes(&html, &transform_request.transform);
 
-    Ok(html.to_string())
+    let output_string = match has_html_tag {
+        false => html.to_string().replace("<html>", "").replace("</html>", ""),
+        true => html.to_string(),
+    };
+
+    Ok(output_string)
 }
 
+/// Recursively transforms the nodes of an html fragment or full document and transforms
+/// their textual content to/from uppercase/lowercase depending on the `TransformMethod``
 fn transform_text_nodes(node: &kuchikiki::NodeRef, transform_method: &TransformMethod) {
     if let Some(text) = node.as_text() {
         let mut contents = text.borrow_mut();
