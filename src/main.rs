@@ -4,7 +4,7 @@ use actix_web::{web, App, HttpServer};
 use case_transformer_rs::endpoints::{alive, transform};
 use log::info;
 
-const SERVER_PORT: u16 = 5000;
+const DEFAULT_SERVER_PORT: u16 = 5000;
 
 const LOG_LEVEL: &'static str = "info";
 
@@ -26,6 +26,11 @@ pub fn init_logs() {
 pub async fn init_server() -> eyre::Result<()> {
     info!("Initiating server...");
 
+    let port = std::env::var("PORT")
+        .unwrap_or_else(|_| DEFAULT_SERVER_PORT.to_string())
+        .parse::<u16>()
+        .unwrap();
+
     let server = HttpServer::new(move || {
         App::new()
             .wrap(
@@ -40,7 +45,7 @@ pub async fn init_server() -> eyre::Result<()> {
                         .service(transform)
                     )
     })
-    .bind(("127.0.0.1", SERVER_PORT))?
+    .bind(("127.0.0.1", port))?
     .run();
 
     server.await?;
