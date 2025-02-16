@@ -2,13 +2,16 @@
 use actix_cors::Cors;
 use actix_web::{web, App, HttpServer};
 use case_transformer_rs::endpoints::{alive, transform};
+use log::info;
 
 const SERVER_PORT: u16 = 5000;
 
-const LOG_LEVEL: &'static str = "debug";
+const LOG_LEVEL: &'static str = "info";
 
 #[actix_web::main]
 async fn main() -> eyre::Result<()> {
+    init_logs();
+
     init_server().await
 }
 
@@ -21,6 +24,8 @@ pub fn init_logs() {
 /// Contains the logic required to initiate the actix webserver
 /// and set up the endpoints
 pub async fn init_server() -> eyre::Result<()> {
+    info!("Initiating server...");
+
     let server = HttpServer::new(move || {
         App::new()
             .wrap(
