@@ -1,4 +1,6 @@
 use kuchikiki::traits::TendrilSink;
+use markup5ever::{local_name, ns, QualName};
+use markup5ever::namespace_url;
 use serde::{Deserialize, Serialize};
 use transform_method::TransformMethod;
 
@@ -20,7 +22,9 @@ impl TransformRequest {
 }
 
 pub fn transform_case(transform_request: TransformRequest) -> eyre::Result<String> {
-    let mut html = kuchikiki::parse_html().from_utf8().one(transform_request.html.as_bytes());
+    let context_name = QualName::new(None, ns!(),  local_name!("div"));
+
+    let mut html = kuchikiki::parse_fragment(context_name, vec![]).from_utf8().one(transform_request.html.as_bytes());
 
     transform_text_nodes(&html, &transform_request.transform);
 
