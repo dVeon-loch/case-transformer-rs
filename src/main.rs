@@ -2,11 +2,20 @@
 use actix_cors::Cors;
 use actix_web::{web, App, HttpServer};
 use case_transformer_rs::endpoints::{alive, transform};
+use clap::{command, Parser};
 use log::info;
 
 const DEFAULT_SERVER_PORT: u16 = 5000;
 
 const LOG_LEVEL: &'static str = "info";
+
+#[derive(Parser, Debug)]
+#[command(author, version, about, long_about = None)]
+struct Args {
+    /// Run in local development mode (binds to 127.0.0.1)
+    #[arg(long)]
+    local: bool,
+}
 
 #[actix_web::main]
 async fn main() -> eyre::Result<()> {
@@ -25,6 +34,14 @@ pub fn init_logs() {
 /// and set up the endpoints
 pub async fn init_server() -> eyre::Result<()> {
     info!("Initiating server...");
+
+    let args = Args::parse();
+
+    let bind_address = if args.local {
+        "127.0.0.1"
+    } else {
+        "0.0.0.0"  // Default for production
+    };
 
     let port = std::env::var("PORT")
         .unwrap_or_else(|_| DEFAULT_SERVER_PORT.to_string())
@@ -45,7 +62,7 @@ pub async fn init_server() -> eyre::Result<()> {
                         .service(transform)
                     )
     })
-    .bind(("127.0.0.1", port))?
+    .bind((bind_address, port))?
     .run();
 
     server.await?;
