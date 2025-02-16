@@ -1,7 +1,7 @@
 //! Main entry point into the Case Transformer server application
 use actix_cors::Cors;
 use actix_web::{web, App, HttpServer};
-use case_transformer_rs::endpoints::alive;
+use case_transformer_rs::endpoints::{alive, transform};
 
 const SERVER_PORT: u16 = 5000;
 
@@ -30,7 +30,10 @@ pub async fn init_server() -> eyre::Result<()> {
                     .allow_any_origin()
                     .max_age(3600), // Cache preflight request for 1 hour
             )
-            .service(web::scope("/api/v1").service(alive))
+            .service(web::scope("/api/v1")
+                        .service(alive)
+                        .service(transform)
+                    )
     })
     .bind(("127.0.0.1", SERVER_PORT))?
     .run();
@@ -39,4 +42,3 @@ pub async fn init_server() -> eyre::Result<()> {
 
     Ok(())
 }
-
