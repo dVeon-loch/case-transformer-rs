@@ -65,3 +65,13 @@ Expected results:
 ```html
 <div><p>HELLO WORLD</p><span>Not a paragraph</span></div>
 ```
+
+## TODO/Improvements
+
+- Dockerize the backend - To ensure ease of installation and running on any hosting service, dockerizing the backend would be a nice addition
+- Write a proper frontend with something like the Leptos framework, compile it to WASM, serve it via the backend
+- Implement rate limiting on the backend and other safety features
+- Fully document the codebase
+- Handle CORS with more granularity - currently allowing anything, but with a proper frontend in place I would want to only allow certain headers, origins and methods
+- Add a results history, store it to an SQL database for viewing
+- Add a login to associate users with their history
