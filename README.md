@@ -19,7 +19,7 @@ and returns the input HTML string transformed according to the specified transfo
 
 For general usage, navigate to the page hosted below:
 
-[HTML Text Transformer](https://dveon-loch.github.io/case-transformer-rs/)
+[HTML Text Transformer](https://dveon-loch.github.io/case-transformer-rs/) (Please note as the backend is hosted via a free service it may need a minute or two of attempting requests to spin up, after which point requests will respond instantly)
 
 The frontend is hosted via Github Pages, and the backend is hosted via [Render.com](https://render.com)
 
